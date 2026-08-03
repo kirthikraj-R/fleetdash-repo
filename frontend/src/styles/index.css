@@ -1,0 +1,233 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Dark theme (default) — soft charcoal-clay rather than near-black, since
+     claymorphism panels are defined by shadow, not by contrast against the
+     page. Values are "R G B" so Tailwind's alpha-value modifiers
+     (e.g. bg-cyan/10) keep working via rgb(var(...) / <alpha-value>). */
+  --color-deep: 32 35 42;
+  --color-panel: 38 42 50;
+  --color-panel2: 44 48 58;
+  --color-line: 58 63 75;
+  --color-muted: 152 158 172;
+  --color-ink: 230 232 238;
+  --color-cyan: 96 196 204;
+  --color-amber: 224 168 92;
+  --color-green: 110 196 142;
+  --color-red: 222 122 118;
+  --glow-opacity: 0.06;
+  /* Clay shadow pair: a "light source" highlight and a soft dark falloff. */
+  --clay-hi: 56 61 73;
+  --clay-lo: 12 14 18;
+}
+
+.light {
+  --color-deep: 230 230 238;
+  --color-panel: 230 230 238;
+  --color-panel2: 224 224 234;
+  --color-line: 210 213 224;
+  --color-muted: 118 123 140;
+  --color-ink: 42 47 60;
+  --color-cyan: 17 133 145;
+  --color-amber: 176 122 27;
+  --color-green: 42 145 97;
+  --color-red: 199 84 84;
+  --glow-opacity: 0.035;
+  /* Classic claymorphism pair for a light lavender-grey surface: a pure
+     white highlight and a soft grey-blue shadow. */
+  --clay-hi: 255 255 255;
+  --clay-lo: 163 167 186;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+html {
+  transition: background-color 0.2s ease;
+}
+
+body {
+  @apply bg-deep text-ink font-body antialiased;
+  background-image: radial-gradient(circle at 20% 0%, rgb(var(--color-cyan) / var(--glow-opacity)), transparent 40%),
+    radial-gradient(circle at 85% 15%, rgb(var(--color-amber) / var(--glow-opacity)), transparent 35%);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+::selection {
+  background: rgb(var(--color-cyan) / 0.3);
+}
+
+/* thin, technical scrollbars to match the console aesthetic */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgb(var(--color-line));
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(var(--color-muted) / 0.5);
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Leaflet overrides — the live map keeps a fixed light basemap regardless of
+   the app-wide light/dark toggle (the tiles themselves are always light), so
+   these are intentionally fixed hex values, not theme variables. */
+.leaflet-container {
+  background: #EAF0F4;
+  font-family: 'Inter', sans-serif;
+}
+.leaflet-control-zoom {
+  border: none !important;
+  box-shadow: 5px 5px 10px rgba(163, 167, 186, 0.5), -5px -5px 10px rgba(255, 255, 255, 0.8) !important;
+  border-radius: 14px !important;
+  overflow: hidden;
+}
+.leaflet-control-zoom a {
+  background-color: #FFFFFF !important;
+  color: #3A4250 !important;
+  border-color: #E3E8EE !important;
+}
+.leaflet-control-zoom a:hover {
+  background-color: #F1F4F8 !important;
+}
+.leaflet-control-attribution {
+  background: rgba(255, 255, 255, 0.8) !important;
+  color: #7C8698 !important;
+  font-size: 10px !important;
+  border-radius: 8px !important;
+}
+.leaflet-control-attribution a {
+  color: #0E8FA3 !important;
+}
+.fleetdash-zone-tooltip {
+  background: #FFFFFF !important;
+  border: none !important;
+  color: #3A4250 !important;
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 10px !important;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: 10px !important;
+  box-shadow: 4px 4px 8px rgba(163, 167, 186, 0.45), -4px -4px 8px rgba(255, 255, 255, 0.8) !important;
+}
+.fleetdash-zone-tooltip::before {
+  display: none;
+}
+
+/* Driver-details popup shown when a vehicle marker is clicked */
+.fleetdash-popup .leaflet-popup-content-wrapper {
+  background: #FFFFFF;
+  border-radius: 20px;
+  box-shadow: 8px 8px 18px rgba(163, 167, 186, 0.5), -8px -8px 18px rgba(255, 255, 255, 0.85);
+  padding: 0;
+}
+.fleetdash-popup .leaflet-popup-content {
+  margin: 0;
+  width: 220px !important;
+}
+.fleetdash-popup .leaflet-popup-tip {
+  background: #FFFFFF;
+  box-shadow: none;
+}
+.fleetdash-popup-card {
+  padding: 14px;
+  font-family: 'Inter', sans-serif;
+}
+.fp-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.fp-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #E3F4F6;
+  color: #0E8FA3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.fp-header-text {
+  min-width: 0;
+}
+.fp-name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  color: #1E2530;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fp-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: #7C8698;
+}
+.fp-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
+.fp-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+.fp-rows {
+  border-top: 1px solid #EEF1F5;
+  padding-top: 8px;
+}
+.fp-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  padding: 2px 0;
+  color: #7C8698;
+}
+.fp-row b {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 500;
+  color: #1E2530;
+}
