@@ -73,7 +73,3 @@ async function main() {
   process.exit(0);
 }
 
-main().catch((err) => {
-  console.error('Benchmark failed:', err);
-  process.exit(1);
-});
