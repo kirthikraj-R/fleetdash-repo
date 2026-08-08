@@ -26,17 +26,7 @@ const errorRate = new Rate('errors');
 const healthLatency = new Trend('health_latency_ms');
 const vehiclesLatency = new Trend('vehicles_latency_ms');
 
-export const options = {
-  scenarios: {
-    ingestion_pressure: {
-      executor: 'constant-arrival-rate',
-      rate: TARGET_RPS,
-      timeUnit: '1s',
-      duration: DURATION,
-      preAllocatedVUs: Math.min(500, Math.ceil(TARGET_RPS / 4)),
-      maxVUs: Math.min(2000, TARGET_RPS),
-    },
-  },
+
   thresholds: {
     // The plan's bar: prove the pipeline holds up, not just "usually works."
     http_req_failed: ['rate<0.001'], // effectively zero dropped/failed requests
